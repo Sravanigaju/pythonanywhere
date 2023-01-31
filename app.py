@@ -1,14 +1,12 @@
 from flask import Flask, render_template
-from flask.wrappers import Response
 import git
 
-app =Flask(__name__)
+app = Flask(__name__)
 
 @app.route ('/update_server', methods=['POST'])
-def webhook():
-
+def update_server():
   repo = git.Repo('./pythonanywhere')  
-  origin =repo.remotes.origin
+  origin = repo.remotes.origin
   repo.create_head('main',
   origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
   origin.pull()
@@ -19,5 +17,5 @@ def index():
     return render_template("index.html")
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=6464)
     
